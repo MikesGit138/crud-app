@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Document</title> -->
+</head>
+<body>
+    <h1><%= title %></h1>
+        <form action="/save" method="post">
+            <div>
+                <label for="projectTitle">Project Title</label>
+                <input type="text" name="projectTitle">
+            </div>
+            <div>
+                <label for="description">Project Description</label>
+                <input type="text" name="description">
+            </div>
+            <div>
+                <label for="start">Project Start Date</label>
+                <input type="text" name="start">
+            </div>
+            <div>
+                <label for="due">Project Due Date</label>
+                <input type="text" name="due">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

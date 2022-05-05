@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Document</title> -->
+</head>
+<body>
+    <div class="container">
+    <h1><%= title %></h1>
+    <a href="/add"><button>Add Project</button></a>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Project Title</th>
+            <th>Project Description</th>
+            <th>Project Start Date</th>
+            <th>Project Due Date</th>
+            <th>Mode of Action</th>
+        </tr>
+        <% projects.forEach(function (project) { %>
+        <tr>
+            <td><%= project.id %></td>
+            <td><%= project.project_title %></td>
+            <td><%= project.project_description %></td>
+            <td><%= project.project_start_dt %></td>
+            <td><%= project.project_due_dt %></td>
+            <td>
+                <button>edit</button>
+                <button>remove</button>
+            </td>
+        </tr>
+        <% }); %>
+    </table>
+    </div>
+</body>
+</html>
