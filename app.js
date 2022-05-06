@@ -3,13 +3,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const ejs = require('ejs')
 const mysql = require('mysql')
-// const { userInfo } = require('os')
-// const { constants } = require('buffer')
 const app = express()
-
-// app.get('/', (req, res) => {
-//     res.send('CRUD APP')
-// })
 
 
 //creating database connection
@@ -67,6 +61,52 @@ app.post('/save', (req,res) => {
     })
 })
 
+//add notes route
+app.get('/add-notes', (req,res)=> {
+    res.render('notes', {
+        title: 'Add a note'
+    })
+})
+
+//save-notes page
+// app.post('/save-notes', (req,res) => {
+//     const projectId = req.params.project_id
+//     let data = {
+//         note: req.body.note,
+//         active_date: req.body.date,
+//         // project_id: req.body.noteid
+//     }
+//     let sql = "UPDATE userinfo.notes SET note='"+req.body.note+"', active_date='"+req.body.date+"' WHERE project_id='"+projectId+"' "
+//     let query = connection.query(sql, data, (err, results) =>{
+//         if(err) throw err
+//         res.redirect('/')
+//     })
+// })
+
+
+
+//update page
+app.post('/update',(req, res) => {
+    const userId = req.body.id;
+    let sql = "update userinfo.projects SET project_title='"+req.body.projectTitle+"', project_description='"+req.body.description+"', project_start_dt='"+req.body.start+"', project_due_dt= '"+req.body.due+"' where id ="+userId;
+    let query = connection.query(sql,(err, results) => {
+      if(err) throw err;
+      //update page redirected to home
+      res.redirect('/');
+    });
+});
+
+//delete route
+app.get('/delete/:userId',(req,res)=> {
+    const userId = req.params.userId
+    let sql = `DELETE FROM userinfo.projects WHERE id = ${userId}`
+    let query = connection.query(sql, (err, result) =>{
+        if (err) throw err
+        //redirect to home after deletion
+       res.redirect('/')
+    })
+})
+
 //edit page
 app.get('/edit/:userId',(req,res)=> {
     const userId = req.params.userId
@@ -78,28 +118,6 @@ app.get('/edit/:userId',(req,res)=> {
             projects: result[0]
 
         })
-    })
-})
-
-//update page
-app.post('/update',(req, res) => {
-    const userId = req.body.id;
-    let sql = "update userinfo.projects SET project_title='"+req.body.projectTitle+"', project_description='"+req.body.description+"', project_start_dt='"+req.body.start+"', project_due_dt= '"+req.body.due+"' where id ="+userId;
-    let query = connection.query(sql,(err, results) => {
-      if(err) throw err;
-      //update page redirected home
-      res.redirect('/');
-    });
-});
-
-//delete route
-app.get('/delete/:userId',(req,res)=> {
-    const userId = req.params.userId
-    let sql = `DELETE FROM userinfo.projects WHERE id = ${userId}`
-    let query = connection.query(sql, (err, result) =>{
-        if (err) throw err
-        //redirect to home after delettion
-       res.redirect('/')
     })
 })
 
