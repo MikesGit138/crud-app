@@ -38,7 +38,6 @@ app.get('/',(req, res) => {
     let query = connection.query(sql, (err, rows) =>{
         if (err) console.log('connection unsuccessful');
         else console.log('query ran')
-    // })
         res.render('user_index', {
             title : 'CRUD Project',
             projects : rows
@@ -46,12 +45,14 @@ app.get('/',(req, res) => {
     })
 });
 
+//set add route
 app.get('/add', (req,res) =>{
     res.render('user_add', {
         title : 'Add new projects'
     })
 })
 
+//set save route
 app.post('/save', (req,res) => {
     let data = {
         project_title: req.body.projectTitle,
@@ -66,6 +67,7 @@ app.post('/save', (req,res) => {
     })
 })
 
+//edit page
 app.get('/edit/:userId',(req,res)=> {
     const userId = req.params.userId
     let sql = `SELECT * FROM userinfo.projects WHERE id = ${userId}`
@@ -79,16 +81,27 @@ app.get('/edit/:userId',(req,res)=> {
     })
 })
 
+//update page
 app.post('/update',(req, res) => {
     const userId = req.body.id;
-    let sql = "update userinfo.projects SET title='"+req.body.project_title+"', description='"+req.body.project_description+"', start='"+req.body.project_start_dt+"' where id ="+userId;
+    let sql = "update userinfo.projects SET project_title='"+req.body.projectTitle+"', project_description='"+req.body.description+"', project_start_dt='"+req.body.start+"', project_due_dt= '"+req.body.due+"' where id ="+userId;
     let query = connection.query(sql,(err, results) => {
       if(err) throw err;
+      //update page redirected home
       res.redirect('/');
     });
 });
- 
 
+//delete route
+app.get('/delete/:userId',(req,res)=> {
+    const userId = req.params.userId
+    let sql = `DELETE FROM userinfo.projects WHERE id = ${userId}`
+    let query = connection.query(sql, (err, result) =>{
+        if (err) throw err
+        //redirect to home after delettion
+       res.redirect('/')
+    })
+})
 
 //server listening
 app.listen (3000, () => {
