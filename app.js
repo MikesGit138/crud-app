@@ -68,6 +68,8 @@ app.get('/add-notes', (req,res)=> {
     })
 })
 
+
+
 //save-notes page
 // app.post('/save-notes', (req,res) => {
 //     const projectId = req.params.project_id
