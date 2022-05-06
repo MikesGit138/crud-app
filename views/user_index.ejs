@@ -10,7 +10,7 @@
     <div class="container">
     <h1><%= title %></h1>
     <a href="/add"><button>Add Project</button></a>
-    <table>
+    <table border="1">
         <tr>
             <th>id</th>
             <th>Project Title</th>
@@ -27,8 +27,8 @@
             <td><%= project.project_start_dt %></td>
             <td><%= project.project_due_dt %></td>
             <td>
-                <button>edit</button>
-                <button>remove</button>
+               <a href="edit/<%= project.id %>"><button>edit</button></a>
+               <a href="delete/<%= project.id %>"><button>remove</button></a>
             </td>
         </tr>
         <% }); %>
