@@ -11,13 +11,12 @@
     <form action="/save-notes" method="post">
         <div>
             <label for="note">Note</label>
-            <textarea rows="5" cols="30" name="note">
-        
+            <textarea rows="5" cols="30" name="note"><%= notes.note %> 
             </textarea>
         </div>
         <div>
             <label for="date">Active Date</label>
-            <input type="text" name="date">
+            <input type="text" name="date" value="<%= notes.active_date %> ">
         </div>
         <button type="submit">Submit</button>
     </form>

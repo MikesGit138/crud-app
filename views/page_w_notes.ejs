@@ -15,6 +15,7 @@
             <th>Note</th>
             <th>Active Date</th>
             <th>Project Id</th>
+            <th>Mode of Action</th>
         </tr>
         <% notes.forEach( (note) => { %>
         <tr>
@@ -22,6 +23,10 @@
             <td><%= note.note %> </td>
             <td><%= note.active_date %> </td>
             <td><%= note.project_id %> </td>
+            <td>
+                <a href="edit-note/<%= note.id %>"><button>edit</button></a>
+                <a href="delete-note/<%= note.id %>"><button>remove</button></a>
+            </td>
         </tr>
         <% }) %>
     </table>

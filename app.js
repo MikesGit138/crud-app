@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const ejs = require('ejs')
 const mysql = require('mysql')
-const { userInfo } = require('os')
 const app = express()
 
 
@@ -69,19 +68,7 @@ app.get('/add-notes', (req,res)=> {
     })
 })
 
-//view notes route
-    // app.get('/notes-page/:userId',(req,res) => {
-    //     const userId = req.params.userId;
-    //     let sql = `SELECT * FROM userinfo.notes WHERE project_id= ${userId}` 
-    //     let query = connection.query(sql, (err, rows) =>{
-    //         if (err) console.log('connection unsuccessful');
-    //         else console.log('query ran')
-    //     res.render('page_w_notes',{
-    //         title: 'View Notes',
-    //         notes: rows
-    //     })
-    // })
-    // })
+//post to change notes data
 app.post('/save-notes', (req,res) => {
     const userId = req.body.projectId
         let data = {
@@ -123,6 +110,43 @@ app.post('/update',(req, res) => {
     });
 });
 
+//update notes
+app.post('/update-notes', (req,res) =>{
+    const userId = req.body.id
+    let sql = "update userinfo.notes SET note='"+req.body.note+"', active_date='"+req.body.date+"' where id ="+userId;
+    let query = connection.query(sql,(err, results) => {
+      if(err) throw err;
+      //update page redirected to notes page
+      res.redirect('/view-notes');
+    });
+})
+
+
+//delete note route
+app.get('/delete-note/:userId',(req,res)=> {
+    const userId = req.params.userId
+    let sql = `DELETE FROM userinfo.notes WHERE id = ${userId}`
+    let query = connection.query(sql, (err, result) =>{
+        if (err) throw err
+        //redirect to home after deletion
+       res.redirect('/view-notes')
+    })
+})
+//edit note
+app.get('/edit-note/:userId',(req,res)=> {
+    const userId = req.params.userId
+    let sql = `SELECT * FROM userinfo.notes WHERE id = ${userId}`
+    let query = connection.query(sql, (err, result) =>{
+        if (err) throw err
+        res.render('edit_note', {
+            title: 'Edit page',
+            notes: result[0]
+
+        })
+    })
+})
+
+
 //delete route
 app.get('/delete/:userId',(req,res)=> {
     const userId = req.params.userId
@@ -147,6 +171,8 @@ app.get('/edit/:userId',(req,res)=> {
         })
     })
 })
+
+//add note using foreign key
 
 //server listening
 app.listen (3000, () => {
