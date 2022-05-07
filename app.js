@@ -68,6 +68,20 @@ app.get('/add-notes', (req,res)=> {
     })
 })
 
+app.post('/save-notes', (req,res) => {
+    let data = {
+        id: req.body.noteId,
+        note: req.body.note,
+        active_date: req.body.date,
+        project_id: req.body.projectId
+    }
+    let sql = "INSERT INTO userinfo.notes SET ?"
+    let query = connection.query(sql, data, (err, results) =>{
+        if(err) throw err
+        res.redirect('/')
+    })
+})
+
 
 
 //save-notes page
