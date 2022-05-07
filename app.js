@@ -70,19 +70,46 @@ app.get('/add-notes', (req,res)=> {
 
 //post to change notes data
 app.post('/save-notes', (req,res) => {
-    const userId = req.body.projectId
+    // const referenceId = req.params.referenceId
         let data = {
             id: req.body.noteId,
             note: req.body.note,
             active_date: req.body.date,
             project_id: req.body.projectId
         }
-    let sql = "INSERT INTO userinfo.notes SET ?"
+    let sql = `INSERT INTO userinfo.notes SET ?`
     let query = connection.query(sql, data, (err, results) =>{
         if(err) throw err
         res.redirect('/view-notes')
     })
 })
+
+app.get('/add-notes/:referenceId',(req,res) => {
+    const referenceId = req.params.referenceId
+    let sql = `SELECT * FROM userinfo.notes WHERE project_id= ${referenceId}`
+    let query = connection.query(sql, (err, rows) =>{
+        if (err) throw err
+        else console.log("notes page successful");
+        res.render('notes',{
+            title: 'View Notes',
+            notes: rows
+        })
+    }) 
+})
+
+app.get('/see-notes/:referenceId',(req,res) => {
+    const referenceId = req.params.referenceId
+    let sql = `SELECT * FROM userinfo.notes WHERE project_id= ${referenceId}`
+    let query = connection.query(sql, (err, rows) =>{
+        if (err) throw err
+        else console.log("notes page successful");
+        res.render('page_w_notes',{
+            title: 'View Notes',
+            notes: rows
+        })
+    }) 
+})
+
 
 
 //view notes route
@@ -173,6 +200,7 @@ app.get('/edit/:userId',(req,res)=> {
 })
 
 //add note using foreign key
+
 
 //server listening
 app.listen (3000, () => {

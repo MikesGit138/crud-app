@@ -44,7 +44,8 @@
                     <td>
                         <a href="edit/<%= project.id %>"><button>edit</button></a>
                         <a href="delete/<%= project.id %>"><button>remove</button></a>
-                        <a href="/add-notes "><button>Add Note</button></a>
+                        <a href="add-notes/<%= project.id %> "><button>Add Note</button></a>
+                        <a href="see-notes/<%= project.id %> "><button>View Project Note</button></a>
                     </td>
                 </tr>
                 <% }) %>
