@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <h1><%= title %> </h1>
     <table border="1">
         <tr>
             <th>Note Id</th>
@@ -14,9 +15,9 @@
             <th>Active Date</th>
             <th>Project Id</th>
         </tr>
+        <% notes.forEach( (note) => { %>
         <tr>
-            <% notes.forEach( (project) => { %>
-            <td><%= notes.id %> </td>
+            <td><%= note.id %> </td>
             <td><%= note.note %> </td>
             <td><%= note.active_date %> </td>
             <td><%= note.project_id %> </td>

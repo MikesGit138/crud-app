@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const ejs = require('ejs')
 const mysql = require('mysql')
+const { userInfo } = require('os')
 const app = express()
 
 
@@ -46,7 +47,7 @@ app.get('/add', (req,res) =>{
     })
 })
 
-//set save route
+//post used to  change data
 app.post('/save', (req,res) => {
     let data = {
         project_title: req.body.projectTitle,
@@ -68,36 +69,46 @@ app.get('/add-notes', (req,res)=> {
     })
 })
 
+//view notes route
+    // app.get('/notes-page/:userId',(req,res) => {
+    //     const userId = req.params.userId;
+    //     let sql = `SELECT * FROM userinfo.notes WHERE project_id= ${userId}` 
+    //     let query = connection.query(sql, (err, rows) =>{
+    //         if (err) console.log('connection unsuccessful');
+    //         else console.log('query ran')
+    //     res.render('page_w_notes',{
+    //         title: 'View Notes',
+    //         notes: rows
+    //     })
+    // })
+    // })
+
+//view notes route
+app.get('/view-notes',(req,res) => {
+    let sql = "SELECT * FROM userinfo.notes"
+    let query = connection.query(sql, (err, rows) =>{
+        if (err) throw err
+        else console.log("notes page successful");
+        res.render('page_w_notes',{
+            title: 'View Notes',
+            notes: rows
+        })
+    }) 
+})
+
 app.post('/save-notes', (req,res) => {
-    let data = {
-        id: req.body.noteId,
-        note: req.body.note,
-        active_date: req.body.date,
-        project_id: req.body.projectId
-    }
+        let data = {
+            id: req.body.noteId,
+            note: req.body.note,
+            active_date: req.body.date,
+            project_id: req.body.projectId
+        }
     let sql = "INSERT INTO userinfo.notes SET ?"
     let query = connection.query(sql, data, (err, results) =>{
         if(err) throw err
-        res.redirect('/')
+        res.redirect('/view-notes')
     })
 })
-
-
-
-//save-notes page
-// app.post('/save-notes', (req,res) => {
-//     const projectId = req.params.project_id
-//     let data = {
-//         note: req.body.note,
-//         active_date: req.body.date,
-//         // project_id: req.body.noteid
-//     }
-//     let sql = "UPDATE userinfo.notes SET note='"+req.body.note+"', active_date='"+req.body.date+"' WHERE project_id='"+projectId+"' "
-//     let query = connection.query(sql, data, (err, results) =>{
-//         if(err) throw err
-//         res.redirect('/')
-//     })
-// })
 
 
 
