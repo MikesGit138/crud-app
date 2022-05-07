@@ -82,21 +82,8 @@ app.get('/add-notes', (req,res)=> {
     //     })
     // })
     // })
-
-//view notes route
-app.get('/view-notes',(req,res) => {
-    let sql = "SELECT * FROM userinfo.notes"
-    let query = connection.query(sql, (err, rows) =>{
-        if (err) throw err
-        else console.log("notes page successful");
-        res.render('page_w_notes',{
-            title: 'View Notes',
-            notes: rows
-        })
-    }) 
-})
-
 app.post('/save-notes', (req,res) => {
+    const userId = req.body.projectId
         let data = {
             id: req.body.noteId,
             note: req.body.note,
@@ -110,6 +97,19 @@ app.post('/save-notes', (req,res) => {
     })
 })
 
+
+//view notes route
+app.get('/view-notes',(req,res) => {
+    let sql = "SELECT * FROM userinfo.notes"
+    let query = connection.query(sql, (err, rows) =>{
+        if (err) throw err
+        else console.log("notes page successful");
+        res.render('page_w_notes',{
+            title: 'View Notes',
+            notes: rows
+        })
+    }) 
+})
 
 
 //update page
