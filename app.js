@@ -61,6 +61,69 @@ app.post('/save', (req,res) => {
     })
 })
 
+//delete route
+app.get('/delete/:userId',(req,res)=> {
+    const userId = req.params.userId
+    let sql = `DELETE FROM userinfo.projects WHERE id = ${userId}`
+    let query = connection.query(sql, (err, result) =>{
+        if (err) throw err
+        //redirect to home after deletion
+       res.redirect('/')
+    })
+})
+
+//edit page
+app.get('/edit/:userId',(req,res)=> {
+    const userId = req.params.userId
+    let sql = `SELECT * FROM userinfo.projects WHERE id = ${userId}`
+    let query = connection.query(sql, (err, result) =>{
+        if (err) throw err
+        res.render('user_edit', {
+            title: 'Edit page',
+            projects: result[0]
+
+        })
+    })
+})
+
+//update page
+app.post('/update',(req, res) => {
+    const userId = req.body.id;
+    let sql = "update userinfo.projects SET project_title='"+req.body.projectTitle+"', project_description='"+req.body.description+"', project_start_dt='"+req.body.start+"', project_due_dt= '"+req.body.due+"' where id ="+userId;
+    let query = connection.query(sql,(err, results) => {
+      if(err) throw err;
+      //update page redirected to home
+      res.redirect('/');
+    });
+});
+
+//dealing with the notes table
+
+//view notes route
+app.get('/view-notes',(req,res) => {
+    let sql = "SELECT * FROM userinfo.notes"
+    let query = connection.query(sql, (err, rows) =>{
+        if (err) throw err
+        else console.log("notes page successful");
+        res.render('page_w_notes',{
+            title: 'View Notes',
+            notes: rows
+        })
+    }) 
+})
+
+//update notes
+app.post('/update-notes', (req,res) =>{
+    const userId = req.body.id
+    let sql = "update userinfo.notes SET note='"+req.body.note+"', active_date='"+req.body.date+"' where id ="+userId;
+    let query = connection.query(sql,(err, results) => {
+      if(err) throw err;
+      //update page redirected to notes page
+      res.redirect('/view-notes');
+    });
+})
+
+
 //add notes route
 app.get('/add-notes', (req,res)=> {
     res.render('notes', {
@@ -70,7 +133,6 @@ app.get('/add-notes', (req,res)=> {
 
 //post to change notes data
 app.post('/save-notes', (req,res) => {
-    // const referenceId = req.params.referenceId
         let data = {
             id: req.body.noteId,
             note: req.body.note,
@@ -110,52 +172,13 @@ app.get('/see-notes/:referenceId',(req,res) => {
     }) 
 })
 
-
-
-//view notes route
-app.get('/view-notes',(req,res) => {
-    let sql = "SELECT * FROM userinfo.notes"
-    let query = connection.query(sql, (err, rows) =>{
-        if (err) throw err
-        else console.log("notes page successful");
-        res.render('page_w_notes',{
-            title: 'View Notes',
-            notes: rows
-        })
-    }) 
-})
-
-
-//update page
-app.post('/update',(req, res) => {
-    const userId = req.body.id;
-    let sql = "update userinfo.projects SET project_title='"+req.body.projectTitle+"', project_description='"+req.body.description+"', project_start_dt='"+req.body.start+"', project_due_dt= '"+req.body.due+"' where id ="+userId;
-    let query = connection.query(sql,(err, results) => {
-      if(err) throw err;
-      //update page redirected to home
-      res.redirect('/');
-    });
-});
-
-//update notes
-app.post('/update-notes', (req,res) =>{
-    const userId = req.body.id
-    let sql = "update userinfo.notes SET note='"+req.body.note+"', active_date='"+req.body.date+"' where id ="+userId;
-    let query = connection.query(sql,(err, results) => {
-      if(err) throw err;
-      //update page redirected to notes page
-      res.redirect('/view-notes');
-    });
-})
-
-
 //delete note route
 app.get('/delete-note/:userId',(req,res)=> {
     const userId = req.params.userId
     let sql = `DELETE FROM userinfo.notes WHERE id = ${userId}`
     let query = connection.query(sql, (err, result) =>{
         if (err) throw err
-        //redirect to home after deletion
+        //redirect to notes page after deletion
        res.redirect('/view-notes')
     })
 })
@@ -172,34 +195,6 @@ app.get('/edit-note/:userId',(req,res)=> {
         })
     })
 })
-
-
-//delete route
-app.get('/delete/:userId',(req,res)=> {
-    const userId = req.params.userId
-    let sql = `DELETE FROM userinfo.projects WHERE id = ${userId}`
-    let query = connection.query(sql, (err, result) =>{
-        if (err) throw err
-        //redirect to home after deletion
-       res.redirect('/')
-    })
-})
-
-//edit page
-app.get('/edit/:userId',(req,res)=> {
-    const userId = req.params.userId
-    let sql = `SELECT * FROM userinfo.projects WHERE id = ${userId}`
-    let query = connection.query(sql, (err, result) =>{
-        if (err) throw err
-        res.render('user_edit', {
-            title: 'Edit page',
-            projects: result[0]
-
-        })
-    })
-})
-
-//add note using foreign key
 
 
 //server listening

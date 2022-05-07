@@ -8,10 +8,10 @@
 </head>
 <body>
     <h1><%= title %></h1>
-    <form action="/save-notes/<%= notes.project_id %> " method="post">
+    <form action="/save-notes " method="post">
         <div>
             <label for="">Project Id</label>
-            <input type="number" name="projectId" id="">
+            <input type="number" name="projectId" value="<%= notes.project_id %> ">
         </div>
         <div>
             <label for="note">Note</label>
